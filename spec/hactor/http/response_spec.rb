@@ -2,28 +2,27 @@ require 'spec_helper'
 require 'hactor/http/response'
 
 describe Hactor::HTTP::Response do
-  let(:http_client) { mock }
   let(:codec) { mock }
   let(:body) { mock }
   let(:wrapped_response) { mock }
   let(:response) {
     Hactor::HTTP::Response.new(wrapped_response,
-                               http_client: http_client,
                                codec: codec,
                                body: body
                               )}
 
   describe "#follow" do
+    let(:http_client) { mock }
     let(:rel) { stub }
-    let(:uri) { stub }
+    let(:link) { stub }
     let(:actor) { stub }
 
-    it "gets the uri for the link " do
-      options = { actor: actor }
+    it "gets the uri for the link with supplied rel" do
+      options = { actor: actor, http_client: http_client }
 
-      body.should_receive(:link_uri).with(rel, options).and_return(uri)
-      http_client.should_receive(:get)
-        .with({ url: uri, actor: actor })
+      body.should_receive(:link).with(rel, options).and_return(link)
+      http_client.should_receive(:follow)
+        .with(link, actor: actor)
 
       response.follow(rel, options)
     end
