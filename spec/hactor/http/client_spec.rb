@@ -5,7 +5,7 @@ describe Hactor::HTTP::Client do
   let(:response_class) { mock }
   let(:backend) { mock }
   let(:client) { Hactor::HTTP::Client.new(response_class: response_class, backend: backend) }
-  describe "#follow" do
+  describe "#get" do
     context "a valid URL is supplied" do
       let(:url) { 'http://example.com/' }
       let(:actor) { mock }
@@ -22,7 +22,7 @@ describe Hactor::HTTP::Client do
         actor.should_receive(:call)
           .with(hactor_response)
 
-        client.follow(url: url, actor: actor)
+        client.get(url: url, actor: actor)
       end
     end
   end

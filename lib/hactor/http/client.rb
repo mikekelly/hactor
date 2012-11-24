@@ -10,7 +10,7 @@ module Hactor
         @backend = options.fetch(:backend) { Faraday.new }
       end
 
-      def follow(options)
+      def get(options)
         url = options.fetch :url
         actor = options.fetch :actor
         response = response_class.new(backend.get url)
