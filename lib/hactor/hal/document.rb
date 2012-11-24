@@ -1,5 +1,6 @@
 require 'forwardable'
 require 'json'
+require 'hactor/hal/resource'
 
 module Hactor
   module HAL
