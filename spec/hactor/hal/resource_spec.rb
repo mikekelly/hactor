@@ -24,7 +24,6 @@ describe Hactor::HAL::Resource do
   let(:link_set_class) { mock }
   let(:embedded_set_class) { mock }
   let(:link_set) { mock }
-  let(:link) { stub }
   let(:embedded_set) { mock }
   let(:rel) { stub }
 
@@ -41,8 +40,9 @@ describe Hactor::HAL::Resource do
 
     describe "#link" do
       it "finds a link with the given rel" do
+        link = stub
         link_set.should_receive(:find).with(rel).and_return(link)
-        resource.link(rel)
+        resource.link(rel).should == link
       end
     end
 
@@ -59,7 +59,11 @@ describe Hactor::HAL::Resource do
     end
 
     describe "#embedded_resource" do
-
+      it "finds an embedded resource with the given rel" do
+        embedded_resource = stub
+        embedded_set.should_receive(:find).with(rel).and_return(embedded_resource)
+        resource.embedded_resource(rel).should == embedded_resource
+      end
     end
 
     describe "#embedded_resources" do

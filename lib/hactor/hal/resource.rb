@@ -25,8 +25,8 @@ module Hactor
         @links ||= link_set_class.new(state['_links'])
       end
 
-      def embedded_resource
-
+      def embedded_resource(rel)
+        embedded_resources.find(rel)
       end
 
       def embedded_resources
