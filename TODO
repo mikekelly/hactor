@@ -1,0 +1,5 @@
+Hactor::HAL::Document #link_uri #root_resource #link #links
+Hactor::HAL::Resource #link_uri #link #links #embedded_resource #embedded_resources
+Hactor::HAL::Link
+Hactor::NullActor
+Hactor::Actor
