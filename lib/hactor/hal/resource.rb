@@ -3,9 +3,11 @@ module Hactor
     class Resource
       RESERVED_PROPERTIES = ['_links', '_embedded']
 
-      attr_reader :state
+      attr_reader :state, :link_set_class, :embedded_set_class
 
       def initialize(state, options={})
+        @link_set_class = options.fetch(:link_set_class) { LinkSet }
+        @embedded_set_class = options.fetch(:embedded_set_class) { EmbeddedSet }
         @state = state
       end
 
@@ -19,12 +21,7 @@ module Hactor
 
       end
 
-      def link_uri(*args)
-        link(*args).href
-      end
-
       def links(options={})
-        link_set_class = options.fetch(:link_set_class) { LinkSet }
         @links ||= link_set_class.new(state['_links'])
       end
 
@@ -33,7 +30,6 @@ module Hactor
       end
 
       def embedded_resources(options={})
-        embedded_set_class = options.fetch(:embedded_set_class) { EmbeddedSet }
         @embedded_resources ||= embedded_set_class.new(state['_embedded'])
       end
     end

@@ -14,7 +14,15 @@ describe Hactor::HAL::Resource do
       'baz' => 123
     }
   end
-  let(:resource) { Hactor::HAL::Resource.new(json) }
+
+  let(:link_set_class) { mock }
+  let(:embedded_set_class) { mock }
+  let(:resource) do
+    Hactor::HAL::Resource.new(json,
+                              link_set_class: link_set_class,
+                              embedded_set_class: embedded_set_class)
+  end
+
   let(:sentinel) { stub }
 
   describe "#properties" do
@@ -32,7 +40,6 @@ describe Hactor::HAL::Resource do
   end
 
   describe "#links" do
-    let(:link_set_class) { mock }
     it "returns a new link set" do
       link_set_class.should_receive(:new).with(json['_links']).and_return(sentinel)
       resource.links(link_set_class: link_set_class).should == sentinel
@@ -44,7 +51,6 @@ describe Hactor::HAL::Resource do
   end
 
   describe "#embedded_resources" do
-    let(:embedded_set_class) { mock }
     it "returns a new embedded set" do
       embedded_set_class.should_receive(:new).with(json['_embedded']).and_return(sentinel)
       resource.embedded_resources(embedded_set_class: embedded_set_class).should == sentinel
