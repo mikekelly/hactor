@@ -18,10 +18,10 @@ module Hactor
       end
 
       def link(rel, options={})
-
+        links.find(rel)
       end
 
-      def links(options={})
+      def links
         @links ||= link_set_class.new(state['_links'])
       end
 
@@ -29,7 +29,7 @@ module Hactor
 
       end
 
-      def embedded_resources(options={})
+      def embedded_resources
         @embedded_resources ||= embedded_set_class.new(state['_embedded'])
       end
     end

@@ -15,15 +15,18 @@ describe Hactor::HAL::Resource do
     }
   end
 
-  let(:link_set_class) { mock }
-  let(:embedded_set_class) { mock }
   let(:resource) do
     Hactor::HAL::Resource.new(json,
                               link_set_class: link_set_class,
                               embedded_set_class: embedded_set_class)
   end
 
-  let(:sentinel) { stub }
+  let(:link_set_class) { mock }
+  let(:embedded_set_class) { mock }
+  let(:link_set) { mock }
+  let(:link) { stub }
+  let(:embedded_set) { mock }
+  let(:rel) { stub }
 
   describe "#properties" do
     it "returns a Hash containing the json with the reserved properties removed" do
@@ -31,29 +34,38 @@ describe Hactor::HAL::Resource do
     end
   end
 
-  describe "#link" do
+  context "links" do
+    before :each do
+      link_set_class.should_receive(:new).with(json['_links']).and_return(link_set)
+    end
 
-  end
+    describe "#link" do
+      it "finds a link with the given rel" do
+        link_set.should_receive(:find).with(rel).and_return(link)
+        resource.link(rel)
+      end
+    end
 
-  describe "#link_uri" do
-
-  end
-
-  describe "#links" do
-    it "returns a new link set" do
-      link_set_class.should_receive(:new).with(json['_links']).and_return(sentinel)
-      resource.links(link_set_class: link_set_class).should == sentinel
+    describe "#links" do
+      it "returns a new link set" do
+        resource.links.should == link_set
+      end
     end
   end
 
-  describe "#embedded_resource" do
+  context "embedded resources" do
+    before :each do
+      embedded_set_class.should_receive(:new).with(json['_embedded']).and_return(embedded_set)
+    end
 
-  end
+    describe "#embedded_resource" do
 
-  describe "#embedded_resources" do
-    it "returns a new embedded set" do
-      embedded_set_class.should_receive(:new).with(json['_embedded']).and_return(sentinel)
-      resource.embedded_resources(embedded_set_class: embedded_set_class).should == sentinel
+    end
+
+    describe "#embedded_resources" do
+      it "returns a new embedded set" do
+        resource.embedded_resources.should == embedded_set
+      end
     end
   end
 end

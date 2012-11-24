@@ -12,8 +12,9 @@ module Hactor
       end
 
       def follow(rel, options={})
-        actor = options.fetch(:actor) { Hactor::NullActor }
+        actor = options.fetch(:actor) { Hactor::NullActor.new }
         http_client = options.fetch(:http_client) { Hactor::HTTP::Client.new }
+
         link = body.link(rel, options)
         http_client.follow(link, actor: actor)
       end
