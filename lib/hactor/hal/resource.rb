@@ -3,11 +3,11 @@ module Hactor
     class Resource
       RESERVED_PROPERTIES = ['_links', '_embedded']
 
-      attr_reader :state, :link_set_class, :embedded_set_class
+      attr_reader :state, :link_collection_class, :embedded_collection_class
 
       def initialize(state, options={})
-        @link_set_class = options.fetch(:link_set_class) { LinkSet }
-        @embedded_set_class = options.fetch(:embedded_set_class) { EmbeddedSet }
+        @link_collection_class = options.fetch(:link_collection_class) { LinkCollection}
+        @embedded_collection_class = options.fetch(:embedded_collection_class) { EmbeddedCollection }
         @state = state
       end
 
@@ -22,7 +22,7 @@ module Hactor
       end
 
       def links
-        @links ||= link_set_class.new(state['_links'])
+        @links ||= link_collection_class.new(state['_links'])
       end
 
       def embedded_resource(rel)
@@ -30,7 +30,7 @@ module Hactor
       end
 
       def embedded_resources
-        @embedded_resources ||= embedded_set_class.new(state['_embedded'])
+        @embedded_resources ||= embedded_collection_class.new(state['_embedded'])
       end
     end
   end

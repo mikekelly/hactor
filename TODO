@@ -1,6 +1,4 @@
-Hactor::HAL::Document #root_resource #link #links
-Hactor::HAL::Resource #link #links #embedded_resource #embedded_resources
-Hactor::HAL::Link
+Hactor::HAL::Link #href
 Hactor::HAL::LinkSet #find(rel)
 Hactor::HAL::EmbeddedSet #find(rel)
 Hactor::NullActor

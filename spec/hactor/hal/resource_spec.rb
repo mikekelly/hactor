@@ -17,14 +17,14 @@ describe Hactor::HAL::Resource do
 
   let(:resource) do
     Hactor::HAL::Resource.new(json,
-                              link_set_class: link_set_class,
-                              embedded_set_class: embedded_set_class)
+                              link_collection_class: link_collection_class,
+                              embedded_collection_class: embedded_collection_class)
   end
 
-  let(:link_set_class) { mock }
-  let(:embedded_set_class) { mock }
-  let(:link_set) { mock }
-  let(:embedded_set) { mock }
+  let(:link_collection_class) { mock }
+  let(:embedded_collection_class) { mock }
+  let(:link_collection) { mock }
+  let(:embedded_collection) { mock }
   let(:rel) { stub }
 
   describe "#properties" do
@@ -35,40 +35,40 @@ describe Hactor::HAL::Resource do
 
   context "links" do
     before :each do
-      link_set_class.should_receive(:new).with(json['_links']).and_return(link_set)
+      link_collection_class.should_receive(:new).with(json['_links']).and_return(link_collection)
     end
 
     describe "#link" do
       it "finds a link with the given rel" do
         link = stub
-        link_set.should_receive(:find).with(rel).and_return(link)
+        link_collection.should_receive(:find).with(rel).and_return(link)
         resource.link(rel).should == link
       end
     end
 
     describe "#links" do
       it "returns a new link set" do
-        resource.links.should == link_set
+        resource.links.should == link_collection
       end
     end
   end
 
   context "embedded resources" do
     before :each do
-      embedded_set_class.should_receive(:new).with(json['_embedded']).and_return(embedded_set)
+      embedded_collection_class.should_receive(:new).with(json['_embedded']).and_return(embedded_collection)
     end
 
     describe "#embedded_resource" do
       it "finds an embedded resource with the given rel" do
         embedded_resource = stub
-        embedded_set.should_receive(:find).with(rel).and_return(embedded_resource)
+        embedded_collection.should_receive(:find).with(rel).and_return(embedded_resource)
         resource.embedded_resource(rel).should == embedded_resource
       end
     end
 
     describe "#embedded_resources" do
       it "returns a new embedded set" do
-        resource.embedded_resources.should == embedded_set
+        resource.embedded_resources.should == embedded_collection
       end
     end
   end
