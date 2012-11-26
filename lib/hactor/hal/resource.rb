@@ -6,7 +6,7 @@ module Hactor
       attr_reader :state, :link_collection_class, :embedded_collection_class
 
       def initialize(state, options={})
-        @link_collection_class = options.fetch(:link_collection_class) { LinkCollection}
+        @link_collection_class = options.fetch(:link_collection_class) { LinkCollection }
         @embedded_collection_class = options.fetch(:embedded_collection_class) { EmbeddedCollection }
         @state = state
       end
@@ -18,7 +18,7 @@ module Hactor
       end
 
       def link(rel, options={})
-        links.find(rel)
+        links.find_by_rel(rel)
       end
 
       def links

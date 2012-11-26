@@ -41,7 +41,7 @@ describe Hactor::HAL::Resource do
     describe "#link" do
       it "finds a link with the given rel" do
         link = stub
-        link_collection.should_receive(:find).with(rel).and_return(link)
+        link_collection.should_receive(:find_by_rel).with(rel).and_return(link)
         resource.link(rel).should == link
       end
     end
