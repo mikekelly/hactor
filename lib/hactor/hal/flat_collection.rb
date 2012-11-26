@@ -13,9 +13,9 @@ module Hactor
         (arr = []).tap do
           hash.each do |rel, value|
             if value.is_a? Array
-              arr += value.map { |link| item_class.new(rel: rel, properties: link) }
+              arr += value.map { |link| item_class.new(link.merge(rel: rel)) }
             else
-              arr.push item_class.new(rel: rel, properties: value)
+              arr.push item_class.new(value.merge(rel: rel))
             end
           end
         end
