@@ -1,4 +1,5 @@
 require 'delegate'
+require 'hactor/hal/document'
 
 module Hactor
   module HTTP
@@ -20,7 +21,7 @@ module Hactor
       end
 
       def body
-        @body ||= codec.new(self)
+        @body ||= codec.new(__getobj__.body)
       end
     end
   end

@@ -1,11 +1,12 @@
 require 'hactor/http/response'
+require 'faraday'
 
 module Hactor
   module HTTP
     class Client
       attr_reader :response_class, :backend
 
-      def initialize(options)
+      def initialize(options={})
         @response_class = options.fetch(:response_class) { Hactor::HTTP::Response }
         @backend = options.fetch(:backend) { Faraday.new }
       end

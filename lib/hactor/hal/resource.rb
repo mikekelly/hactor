@@ -1,3 +1,5 @@
+require 'hactor/hal/link_collection'
+
 module Hactor
   module HAL
     class Resource
