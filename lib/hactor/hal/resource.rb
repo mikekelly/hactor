@@ -1,4 +1,5 @@
 require 'hactor/hal/link_collection'
+require 'hactor/hal/embedded_collection'
 
 module Hactor
   module HAL

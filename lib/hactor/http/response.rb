@@ -4,9 +4,10 @@ require 'hactor/hal/document'
 module Hactor
   module HTTP
     class Response < SimpleDelegator
-      attr_reader :http_client, :codec
+      attr_reader :request_client, :codec
 
       def initialize(response, options={})
+        @request_client = options.fetch(:http_client)
         @codec = options.fetch(:codec) { Hactor::HAL::Document }
         @body = options[:body]
         super(response)
@@ -14,10 +15,10 @@ module Hactor
 
       def follow(rel, options={})
         actor = options.fetch(:actor) { Hactor::NullActor.new }
-        http_client = options.fetch(:http_client) { Hactor::HTTP::Client.new }
+        client = options.fetch(:http_client) { request_client }
 
         link = body.link(rel, options)
-        http_client.follow(link, actor: actor)
+        client.follow(link, actor: actor)
       end
 
       def body

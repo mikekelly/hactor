@@ -1,18 +1,16 @@
-require 'forwardable'
+require 'delegate'
 require 'json'
 require 'hactor/hal/resource'
 
 module Hactor
   module HAL
-    class Document
-      extend Forwardable
-
+    class Document < SimpleDelegator
       attr_reader :body, :resource_class
-      def_delegators :root_resource, :link, :links, :embedded_resource, :embedded_resources
 
       def initialize(body, options={})
         @resource_class = options.fetch(:resource_class) { Resource }
         @body = JSON.parse(body)
+        super(root_resource)
       end
 
       def root_resource

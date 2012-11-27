@@ -10,7 +10,7 @@ module Hactor
 
       private
       def flatten(hash)
-        (arr = []).tap do
+        arr = []
           hash.each do |rel, value|
             if value.is_a? Array
               arr += value.map { |link| item_class.new(link.merge(rel: rel)) }
@@ -18,7 +18,7 @@ module Hactor
               arr.push item_class.new(value.merge(rel: rel))
             end
           end
-        end
+        arr
       end
     end
   end

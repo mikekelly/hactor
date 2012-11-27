@@ -3,12 +3,13 @@ require 'faraday'
 
 module Hactor
   module HTTP
-    class Client
+    class Client < SimpleDelegator
       attr_reader :response_class, :backend
 
       def initialize(options={})
         @response_class = options.fetch(:response_class) { Hactor::HTTP::Response }
         @backend = options.fetch(:backend) { Faraday.new }
+        super(@backend)
       end
 
       def follow(link, options = {})
@@ -19,7 +20,10 @@ module Hactor
       def get(options)
         url = options.fetch :url
         actor = options.fetch :actor
-        response = response_class.new(backend.get url)
+
+        response = response_class.new(backend.get(url), http_client: self)
+
+        backend.url_prefix = backend.build_url(url)
         actor.call response
       end
     end
