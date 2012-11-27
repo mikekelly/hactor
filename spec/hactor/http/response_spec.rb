@@ -5,17 +5,18 @@ describe Hactor::HTTP::Response do
   let(:codec) { mock }
   let(:body) { mock }
   let(:wrapped_response) { mock }
+  let(:http_client) { mock }
 
   describe "#follow" do
-    let(:http_client) { mock }
     let(:rel) { stub }
     let(:link) { stub }
     let(:actor) { stub }
-    let(:response) {
+    let(:response) do
       Hactor::HTTP::Response.new(wrapped_response,
+                                 http_client: http_client,
                                  codec: codec,
-                                 body: body
-                                )}
+                                 body: body)
+    end
 
     it "gets the uri for the link with supplied rel" do
       options = { actor: actor, http_client: http_client }
@@ -29,11 +30,12 @@ describe Hactor::HTTP::Response do
   end
 
   describe "#body" do
-    let(:response) {
-      Hactor::HTTP::Response.new(wrapped_response,
-                                 codec: codec
-                                )}
     let(:body) { mock }
+    let(:response) do
+      Hactor::HTTP::Response.new(wrapped_response,
+                                 http_client: http_client,
+                                 codec: codec)
+    end
 
     it "passes itself into the codec" do
       sentinel = stub
