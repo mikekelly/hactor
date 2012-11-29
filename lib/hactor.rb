@@ -1,3 +1,4 @@
+require 'hactor/version'
 require 'hactor/http/client'
 
 module Hactor
