@@ -1,5 +1,6 @@
 require 'hactor/version'
 require 'hactor/http/client'
+require 'hactor/actor'
 
 module Hactor
   def self.start(options)

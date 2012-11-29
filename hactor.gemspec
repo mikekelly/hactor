@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Hactor::VERSION
   gem.authors       = ["Mike Kelly"]
   gem.email         = ["mikekelly321@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{A framework for building hypermedia clients}
+  gem.summary       = %q{A framework for building hypermedia clients}
+  gem.homepage      = "https://github.com/mikekelly/hactor"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
