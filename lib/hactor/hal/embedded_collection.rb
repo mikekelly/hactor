@@ -5,7 +5,6 @@ require 'hactor/hal/resource'
 
 module Hactor
   module HAL
-
     class EmbeddedCollection
       extend Forwardable
       include Enumerable

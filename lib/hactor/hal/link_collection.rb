@@ -5,7 +5,6 @@ require 'hactor/hal/link'
 
 module Hactor
   module HAL
-
     class LinkCollection
       extend Forwardable
       include Enumerable
