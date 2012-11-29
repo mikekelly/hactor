@@ -17,8 +17,8 @@ module Hactor
         actor = options.fetch(:actor) { Hactor::NullActor.new }
         client = options.fetch(:http_client) { request_client }
 
-        link = body.link(rel, options)
-        client.follow(link, actor: actor)
+        link = body.link(rel)
+        client.follow(link, context_url: env[:url], actor: actor)
       end
 
       def body

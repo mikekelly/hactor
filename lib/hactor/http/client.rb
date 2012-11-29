@@ -13,17 +13,19 @@ module Hactor
       end
 
       def follow(link, options = {})
-        actor = options.fetch(:actor) { Hactor::NullActor }
-        get(url: link.href, actor: actor)
+        actor = options.fetch(:actor)
+        context_url = options.fetch(:context_url)
+
+        url = context_url.merge(link.href)
+        get(url: url, actor: actor)
       end
 
       def get(options)
         url = options.fetch :url
         actor = options.fetch :actor
 
-        response = response_class.new(backend.get(url), http_client: self)
-
-        backend.url_prefix = backend.build_url(url)
+        response = response_class.new(backend.get(url),
+                                      http_client: self)
         actor.call response
       end
     end
