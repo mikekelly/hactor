@@ -13,7 +13,7 @@ module Hactor
         arr = []
           hash.each do |rel, value|
             if value.is_a? Array
-              arr += value.map { |link| item_class.new(link.merge(rel: rel)) }
+              arr += value.map { |obj| item_class.new(obj.merge(rel: rel)) }
             else
               arr.push item_class.new(value.merge(rel: rel))
             end
