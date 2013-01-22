@@ -23,7 +23,7 @@ module Hactor
         @all ||= flat_collection_class.new(hash, item_class: embedded_class)
       end
 
-      def find_by_rel(rel)
+      def find(rel)
         all.find(->{ NullResource.new }) { |resource| resource.rel == rel }
       end
     end

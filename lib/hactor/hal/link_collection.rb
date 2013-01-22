@@ -23,8 +23,12 @@ module Hactor
         @all ||= flat_collection_class.new(hash, item_class: link_class)
       end
 
-      def find_by_rel(rel)
+      def find(rel)
         all.find(->{ NullLink.new }) { |link| link.rel == rel }
+      end
+
+      def with_rel(rel)
+        all.select { |link| link.rel == rel }
       end
     end
   end

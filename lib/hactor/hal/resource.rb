@@ -21,7 +21,7 @@ module Hactor
       end
 
       def link(rel, options={})
-        links.find_by_rel(rel)
+        links.find(rel)
       end
 
       def links
