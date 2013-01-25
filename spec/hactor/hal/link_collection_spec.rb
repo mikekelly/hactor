@@ -24,7 +24,7 @@ describe Hactor::HAL::LinkCollection do
         .and_return(flat_collection)
       flat_collection.should_receive(:find).and_return(link)
 
-      collection.find_by_rel(:self).should == link
+      collection.find(:self).should == link
     end
   end
 end
