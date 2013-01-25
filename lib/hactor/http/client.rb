@@ -1,19 +1,19 @@
-require 'hactor/http/response'
 require 'faraday'
+require 'hactor/null_actor'
+require 'hactor/http/response'
 
 module Hactor
   module HTTP
-    class Client < SimpleDelegator
+    class Client < Delegator
       attr_reader :response_class, :backend
 
       def initialize(options={})
-        @response_class = options.fetch(:response_class) { Hactor::HTTP::Response }
-        @backend = options.fetch(:backend) { Faraday.new }
-        super(@backend)
+        @response_class = options[:response_class] || Hactor::HTTP::Response
+        @backend = options[:backend] || Faraday.new
       end
 
       def follow(link, options = {})
-        actor = options.fetch(:actor)
+        actor = options[:actor] || Hactor::NullActor.new
         context_url = options.fetch(:context_url)
 
         url = context_url.merge(link.href)
@@ -27,6 +27,10 @@ module Hactor
         response = response_class.new(backend.get(url),
                                       http_client: self)
         actor.call response
+      end
+
+      def __getobj__
+        backend
       end
     end
   end

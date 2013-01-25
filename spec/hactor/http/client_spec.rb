@@ -6,8 +6,8 @@ describe Hactor::HTTP::Client do
   let(:backend) { mock }
   let(:actor) { mock }
   let(:client) do
-    Hactor::HTTP::Client.new(response_class: response_class,
-                             backend: backend)
+    Hactor::HTTP::Client.new response_class: response_class,
+                             backend: backend
   end
 
   describe "#get" do
