@@ -23,12 +23,21 @@ describe Hactor::HAL::Resource do
 
   let(:resource) do
     Hactor::HAL::Resource.new json,
-                              rel: rel
+                              rel: rel,
+                              document: stub
   end
 
   before :each do
     resource.link_collection_class = link_collection_class
     resource.embedded_collection_class = embedded_collection_class
+  end
+
+  describe "#follow" do
+    it ""
+  end
+
+  describe "#traverse" do
+    it ""
   end
 
   describe "#properties" do
