@@ -15,17 +15,21 @@ describe Hactor::HAL::Resource do
     }
   end
 
-  let(:resource) do
-    Hactor::HAL::Resource.new(json,
-                              link_collection_class: link_collection_class,
-                              embedded_collection_class: embedded_collection_class)
-  end
-
   let(:link_collection_class) { mock }
-  let(:embedded_collection_class) { mock }
   let(:link_collection) { mock }
+  let(:embedded_collection_class) { mock }
   let(:embedded_collection) { mock }
   let(:rel) { stub }
+
+  let(:resource) do
+    Hactor::HAL::Resource.new json,
+                              rel: rel
+  end
+
+  before :each do
+    resource.link_collection_class = link_collection_class
+    resource.embedded_collection_class = embedded_collection_class
+  end
 
   describe "#properties" do
     it "returns a Hash containing the json with the reserved properties removed" do
@@ -41,7 +45,7 @@ describe Hactor::HAL::Resource do
     describe "#link" do
       it "finds a link with the given rel" do
         link = stub
-        link_collection.should_receive(:find_by_rel).with(rel).and_return(link)
+        link_collection.should_receive(:find).with(rel).and_return(link)
         resource.link(rel).should == link
       end
     end
