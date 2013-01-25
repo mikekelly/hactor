@@ -1,28 +1,31 @@
 require 'delegate'
+require 'forwardable'
 require 'hactor/hal/document'
 
 module Hactor
   module HTTP
-    class Response < SimpleDelegator
-      attr_reader :http_client, :codec
+    class Response < Delegator
+      extend Forwardable
+
+      attr_reader :codec, :response
+      attr_accessor :http_client
+
+      def_delegators :body, :follow, :traverse
 
       def initialize(response, options={})
         @http_client = options.fetch(:http_client)
         @codec = options.fetch(:codec) { Hactor::HAL::Document }
         @body = options[:body]
-        super(response)
-      end
-
-      def follow(rel, options={})
-        actor = options.fetch(:actor) { Hactor::NullActor.new }
-        client = options.fetch(:http_client) { http_client }
-
-        link = body.link(rel)
-        client.follow(link, context_url: env[:url], actor: actor)
+        @response = response
       end
 
       def body
-        @body ||= codec.new(__getobj__.body)
+        @body ||= codec.new __getobj__.body,
+                            response: self
+      end
+
+      def __getobj__
+        response
       end
     end
   end
