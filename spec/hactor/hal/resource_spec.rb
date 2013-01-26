@@ -19,12 +19,18 @@ describe Hactor::HAL::Resource do
   let(:link_collection) { mock }
   let(:embedded_collection_class) { mock }
   let(:embedded_collection) { mock }
+  let(:http_client) { mock }
+
   let(:rel) { stub }
+  let(:link) { stub }
+  let(:base_url) { stub }
+  let(:document) { stub(http_client: http_client, base_url: base_url) }
 
   let(:resource) do
     Hactor::HAL::Resource.new json,
                               rel: rel,
-                              context: stub
+                              context: document
+                                            
   end
 
   before :each do
@@ -32,12 +38,29 @@ describe Hactor::HAL::Resource do
     resource.embedded_collection_class = embedded_collection_class
   end
 
-  describe "#follow" do
-    it ""
-  end
+  context "http transition methods" do
+    before :each do
+      link_collection_class.should_receive(:new).and_return(link_collection)
+      link_collection.should_receive(:find).with(rel).and_return(link)
+    end
 
-  describe "#traverse" do
-    it ""
+    describe "#follow" do
+      it "tells the http client to follow the link and also supplies the context URL" do
+        http_client.should_receive(:follow).with(link, { context_url: base_url })
+
+        resource.follow(rel)
+      end
+    end
+
+    describe "#traverse" do
+      it "tells the http client to traverse the link using the supplied method and also supplies the context URL" do
+        method = stub
+        http_client.should_receive(:traverse).
+          with(link, { method: method, context_url: base_url })
+
+        resource.traverse(rel, method: method)
+      end
+    end
   end
 
   describe "#properties" do
@@ -54,7 +77,6 @@ describe Hactor::HAL::Resource do
 
     describe "#link" do
       it "finds a link with the given rel" do
-        link = stub
         link_collection.should_receive(:find).with(rel).and_return(link)
         resource.link(rel).should == link
       end

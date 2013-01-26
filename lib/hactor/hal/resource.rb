@@ -25,6 +25,7 @@ module Hactor
       end
 
       def traverse(rel, options={})
+        http_client.traverse link(rel), options_in_context(options)
       end
 
       def properties
