@@ -7,6 +7,7 @@ class UserListActor
 
   def on_200(response)
     user_links = response.body.links.select { |link| link.rel == 'ht:user' }
+    puts "There's #{user_links.count} users on haltalk:"
     user_links.each do |link|
       puts "#{link.title} (#{link.href})"
     end
