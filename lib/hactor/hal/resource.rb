@@ -9,14 +9,14 @@ module Hactor
 
       RESERVED_PROPERTIES = ['_links', '_embedded']
 
-      attr_reader :rel, :state, :http_client
+      attr_reader :rel, :state, :http_client, :context
       attr_accessor :link_collection_class, :embedded_collection_class
 
-      def_delegators :document, :http_client
+      def_delegators :context, :http_client, :base_url
 
-      def initialize(state, options={})
+      def initialize(state, options)
         @rel = options.fetch(:rel)
-        @document = options.fetch(:document)
+        @context = options.fetch(:context)
         @state = state
       end
 
@@ -38,7 +38,8 @@ module Hactor
       end
 
       def links
-        @links ||= link_collection_class.new(state['_links'])
+        @links ||= link_collection_class.new state['_links'],
+                                             parent: self
       end
 
       def embedded_resource(rel)
@@ -46,7 +47,8 @@ module Hactor
       end
 
       def embedded_resources
-        @embedded_resources ||= embedded_collection_class.new(state['_embedded'])
+        @embedded_resources ||= embedded_collection_class.new state['_embedded'],
+                                                              parent: self
       end
 
       def embedded_collection_class
@@ -60,7 +62,7 @@ module Hactor
       private
 
       def options_in_context(options)
-        options.merge context_url: document.base_url
+        options.merge context_url: context.base_url
       end
     end
   end

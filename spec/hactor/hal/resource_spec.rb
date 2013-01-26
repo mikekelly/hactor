@@ -24,7 +24,7 @@ describe Hactor::HAL::Resource do
   let(:resource) do
     Hactor::HAL::Resource.new json,
                               rel: rel,
-                              document: stub
+                              context: stub
   end
 
   before :each do
@@ -48,7 +48,8 @@ describe Hactor::HAL::Resource do
 
   context "links" do
     before :each do
-      link_collection_class.should_receive(:new).with(json['_links']).and_return(link_collection)
+      link_collection_class.should_receive(:new).
+        with(json['_links'], parent: resource).and_return(link_collection)
     end
 
     describe "#link" do
@@ -68,7 +69,8 @@ describe Hactor::HAL::Resource do
 
   context "embedded resources" do
     before :each do
-      embedded_collection_class.should_receive(:new).with(json['_embedded']).and_return(embedded_collection)
+      embedded_collection_class.should_receive(:new).
+        with(json['_embedded'], parent: resource).and_return(embedded_collection)
     end
 
     describe "#embedded_resource" do
