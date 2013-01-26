@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'hactor'
 require 'hactor/actor'
 
@@ -31,8 +30,4 @@ class HomeActor
   end
 end
 
-describe Hactor do
-  it "should work as expected :)" do
-    Hactor.start url: 'http://haltalk.herokuapp.com/', actor: HomeActor.new
-  end
-end
+Hactor.start url: 'http://haltalk.herokuapp.com/', actor: HomeActor.new
