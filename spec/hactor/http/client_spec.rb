@@ -36,16 +36,32 @@ describe Hactor::HTTP::Client do
       let(:context_url) { mock }
       let(:resolved_uri) { stub }
 
-      it "should use the context url to resolve link href" do
+      before :each do
         Delegator.class_eval { include RSpec::Mocks::Methods }
         client.stub!(:get).with(url: resolved_uri, actor: actor)
-        link.should_receive(:href)
+      end
+
+      context "plain url (no expand_with in option)" do
+        it "should use the context url to resolve link href" do
+          link.should_receive(:href)
           .and_return(uri)
-        context_url.should_receive(:merge)
+          context_url.should_receive(:merge)
           .with(uri)
           .and_return(resolved_uri)
 
-        client.follow(link, context_url: context_url, actor: actor)
+          client.follow(link, context_url: context_url, actor: actor)
+        end
+      end
+
+      context "URI template (expand_with in option)" do
+        it "should apply the variables to the template and follow resulting URI" do
+          variables = stub
+
+          link.should_receive(:expand_with).with(variables).and_return(uri)
+          context_url.should_receive(:merge).with(uri).and_return(resolved_uri)
+
+          client.follow(link, context_url: context_url, actor: actor, expand_with: variables)
+        end
       end
     end
   end

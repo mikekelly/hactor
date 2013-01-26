@@ -13,10 +13,13 @@ module Hactor
       end
 
       def follow(link, options = {})
-        actor = options[:actor] || Hactor::NullActor.new
         context_url = options.fetch(:context_url)
+        actor = options[:actor] || Hactor::NullActor.new
+        variables = options[:expand_with]
 
-        url = context_url.merge(link.href)
+        href = variables ? link.expand_with(variables) : link.href
+        url = context_url.merge(href)
+
         get(url: url, actor: actor)
       end
 
