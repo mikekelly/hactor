@@ -14,7 +14,7 @@ module Hactor
 
       def initialize(body, options={})
         @response = options.fetch(:response)
-        @resource_class = options[:resource_class]
+        @resource_class = options[:resource_class] || Hactor::HAL::Resource
         @body = JSON.parse(body)
       end
 
@@ -23,7 +23,7 @@ module Hactor
       end
 
       def root_resource
-        @root_resource ||= resource_class.new(body, rel: 'self', document: self)
+        @root_resource ||= resource_class.new(body, rel: 'self', context: self)
       end
 
       def base_url

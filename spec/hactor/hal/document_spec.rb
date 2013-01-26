@@ -16,7 +16,7 @@ describe Hactor::HAL::Document do
   describe "#root_resource" do
     it "returns new Resource object" do
       resource_class.should_receive(:new)
-        .with(JSON.parse(body), { rel: 'self', document: doc })
+        .with(JSON.parse(body), { rel: 'self', context: doc })
         .and_return(sentinel)
 
       doc.root_resource.should == sentinel
