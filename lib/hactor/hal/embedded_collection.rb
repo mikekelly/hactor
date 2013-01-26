@@ -9,18 +9,22 @@ module Hactor
       extend Forwardable
       include Enumerable
 
-      attr_reader :hash, :embedded_class, :flat_collection_class
-      def_delegators :each
+      attr_reader :hash, :parent, :embedded_class, :flat_collection_class
 
-      def initialize(hash, options={})
+      def_delegators :all, :each
+
+      def initialize(hash, options)
         #TODO: throw/log parsing error if not hash
-        @embedded_class = options.fetch(:embedded_class) { Resource }
-        @flat_collection_class = options.fetch(:flat_collection_class) { FlatCollection }
         @hash = hash
+        @parent = options.fetch(:parent)
+        @embedded_class = options[:embedded_class] || Resource
+        @flat_collection_class = options[:flat_collection_class] || FlatCollection
       end
 
       def all
-        @all ||= flat_collection_class.new(hash, item_class: embedded_class)
+        @all ||= flat_collection_class.new hash,
+                                           parent: parent,
+                                           item_class: embedded_class
       end
 
       def find(rel)
