@@ -11,8 +11,10 @@ describe Hactor::HAL::LinkCollection do
   let(:flat_collection_class) { mock }
   let(:flat_collection) { mock }
   let(:link) { stub }
+  let(:parent) { stub }
   let(:collection) do
     Hactor::HAL::LinkCollection.new(simple_link_hash,
+                                    parent: parent,
                                     link_class: link_class,
                                     flat_collection_class: flat_collection_class)
   end
@@ -20,7 +22,7 @@ describe Hactor::HAL::LinkCollection do
   describe "#find" do
     it "finds a link with the supplied rel" do
       flat_collection_class.should_receive(:new)
-        .with(simple_link_hash, item_class: link_class)
+        .with(simple_link_hash, parent: parent, item_class: link_class)
         .and_return(flat_collection)
       flat_collection.should_receive(:find).and_return(link)
 

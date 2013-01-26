@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'hactor/hal/flat_collection'
 require 'hactor/hal/link'
-#require 'hactor/hal/null_link'
+require 'hactor/hal/null_link'
 
 module Hactor
   module HAL
@@ -9,18 +9,22 @@ module Hactor
       extend Forwardable
       include Enumerable
 
-      attr_reader :hash, :link_class, :flat_collection_class
+      attr_reader :hash, :parent, :link_class, :flat_collection_class
       def_delegators :all, :each
 
       def initialize(hash, options={})
         #TODO: throw/log parsing error if not hash
-        @link_class = options.fetch(:link_class) { Link }
-        @flat_collection_class = options.fetch(:flat_collection_class) { FlatCollection }
         @hash = hash
+        @parent = options.fetch(:parent)
+        @link_class = options[:link_class] || Link
+        @flat_collection_class = options[:flat_collection_class] || FlatCollection
       end
 
       def all
-        @all ||= flat_collection_class.new(hash, item_class: link_class)
+        @all ||= flat_collection_class.new hash,
+                                           item_class: link_class,
+                                           parent: parent
+
       end
 
       def find(rel)
