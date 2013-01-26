@@ -47,7 +47,7 @@ class SomeActor
     # Follow the rel_name link
     response.follow rel_name, actor: some_actor
     # Expand link's URI template with query_vars and follow that
-    response.follow rel_name, query: query_vars , actor: some_actor
+    response.follow rel_name, expand_with: query_vars , actor: some_actor
     # Traverse the link with some_method, some_headers, and some_body
     response.traverse rel_name, method: some_method, headers: some_headers,  body: some_string, actor: some_actor
     # In each case, the response produce will be handled by some_actor
