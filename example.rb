@@ -27,6 +27,7 @@ class HomeActor
   def on_200(response)
     response.follow 'ht:users', actor: UserListActor.new
     response.follow 'ht:latest-posts', actor: LatestPostActor.new
+    response.follow 'ht:me', expand_with: { name: 'mike' }, actor: ->(res) { puts res.inspect }
   end
 end
 
