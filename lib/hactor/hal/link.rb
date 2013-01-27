@@ -7,7 +7,7 @@ module Hactor
       attr_reader :rel, :parent_resource, :template_class
 
       def initialize(obj, options)
-        @href = obj[:href]
+        @href = obj['href']
         @rel = options.fetch(:rel)
         @parent_resource = options.fetch(:context)
         @template_class = options[:template_class] || Addressable::Template
