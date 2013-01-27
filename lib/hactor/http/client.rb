@@ -17,7 +17,7 @@ module Hactor
         actor = options[:actor] || Hactor::NullActor.new
         variables = options[:expand_with]
 
-        href = variables ? link.expand_with(variables) : link.href
+        href = variables ? link.href(variables) : link.href
         url = context_url.merge(href)
 
         get(url: url, actor: actor)

@@ -57,7 +57,7 @@ describe Hactor::HTTP::Client do
         it "should apply the variables to the template and follow resulting URI" do
           variables = stub
 
-          link.should_receive(:expand_with).with(variables).and_return(uri)
+          link.should_receive(:href).with(variables).and_return(uri)
           context_url.should_receive(:merge).with(uri).and_return(resolved_uri)
 
           client.follow(link, context_url: context_url, actor: actor, expand_with: variables)
