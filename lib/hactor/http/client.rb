@@ -14,27 +14,26 @@ module Hactor
 
       def follow(link, options)
         context_url = options.fetch(:context_url)
+
         actor = options[:actor] || Hactor::NullActor.new
-        variables = options[:expand_with]
+        headers = options[:headers]
 
-        href = variables ? link.href(variables) : link.href
-        url = context_url.merge(href)
-
-        get(url: url, actor: actor)
+        url = context_url.merge(link.href(options[:expand_with]))
+        response = response_class.new backend.get(url, nil, headers),
+                                      http_client: self
+        actor.call response
       end
 
       def traverse(link, options)
+        context_url = options.fetch(:context_url)
+        method = options.fetch(:method).to_s.downcase
 
-        backend.call method 
-
-      end
-
-      def get(options)
-        url = options.fetch :url
-        actor = options.fetch :actor
+        actor = options[:actor] || Hactor::NullActor.new
         headers = options[:headers]
+        body = options[:body]
 
-        response = response_class.new backend.get(url, nil, headers),
+        url = context_url.merge link.href(options[:expand_with])
+        response = response_class.new backend.send(method, url, body, headers),
                                       http_client: self
         actor.call response
       end
