@@ -3,14 +3,19 @@ require 'hactor/hal/link'
 
 describe Hactor::HAL::Link do
   context "templated link" do
-    let(:template_class) { mock }
-    let(:template) { mock }
+    let(:template_class) { mock('templ_class') }
+    let(:template) { mock('template') }
     let(:href) { stub }
+
+    let(:state) do
+      {
+        'href' => href,
+        'templated' => true
+      }
+    end
+
     let(:link) do
-      Hactor::HAL::Link.new({
-        href: href,
-        templated: true
-      },{
+      Hactor::HAL::Link.new(state,{
         rel: stub,
         context: stub,
         template_class: template_class
