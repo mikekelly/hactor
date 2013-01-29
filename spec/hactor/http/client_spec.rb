@@ -15,10 +15,11 @@ describe Hactor::HTTP::Client do
       let(:url) { 'http://example.com/' }
       let(:response) { stub }
       let(:hactor_response) { stub }
+      let(:headers) { stub }
 
       it "GETs from URL and passes Response object to the actor" do
         backend.should_receive(:get)
-          .with(url)
+          .with(url, nil, headers)
           .and_return(response)
         response_class.should_receive(:new)
           .with(response, http_client: client)
@@ -26,7 +27,7 @@ describe Hactor::HTTP::Client do
         actor.should_receive(:call)
           .with(hactor_response)
 
-        client.get(url: url, actor: actor)
+        client.get(url: url, actor: actor, headers: headers)
       end
     end
 

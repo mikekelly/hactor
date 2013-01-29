@@ -12,7 +12,7 @@ module Hactor
         @backend = options[:backend] || Faraday.new
       end
 
-      def follow(link, options = {})
+      def follow(link, options)
         context_url = options.fetch(:context_url)
         actor = options[:actor] || Hactor::NullActor.new
         variables = options[:expand_with]
@@ -26,9 +26,11 @@ module Hactor
       def get(options)
         url = options.fetch :url
         actor = options.fetch :actor
+        headers = options[:headers]
 
-        response = response_class.new(backend.get(url),
-                                      http_client: self)
+        response = response_class.new backend.get(url, nil, headers),
+                                      http_client: self
+        puts headers.inspect
         actor.call response
       end
 
