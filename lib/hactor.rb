@@ -10,6 +10,6 @@ module Hactor
     actor = options[:actor] || NullActor.new
     http_client = options[:http_client] || Hactor::HTTP::Client.new
 
-    http_client.get(url: url, actor: actor)
+    http_client.get(url, actor: actor)
   end
 end

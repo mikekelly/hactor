@@ -8,7 +8,7 @@ describe Hactor do
       let(:actor) { mock }
       let(:http_client) { mock }
       it "GETs from the URL and passes a response object to an actor" do
-        http_client.should_receive(:get).with(url: url, actor: actor)
+        http_client.should_receive(:get).with(url, actor: actor)
         Hactor.start(url: url, actor: actor, http_client: http_client)
       end
     end
