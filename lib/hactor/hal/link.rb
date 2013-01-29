@@ -14,8 +14,9 @@ module Hactor
         super(obj)
       end
 
-      def href(variables={})
+      def href(variables=nil)
         if templated?
+          variables ||= {}
           template_class.new(@href).expand(variables).to_s
         else
           @href
