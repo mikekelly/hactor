@@ -23,6 +23,12 @@ module Hactor
         get(url: url, actor: actor)
       end
 
+      def traverse(link, options)
+
+        backend.call method 
+
+      end
+
       def get(options)
         url = options.fetch :url
         actor = options.fetch :actor
@@ -30,7 +36,6 @@ module Hactor
 
         response = response_class.new backend.get(url, nil, headers),
                                       http_client: self
-        puts headers.inspect
         actor.call response
       end
 

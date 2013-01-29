@@ -31,38 +31,39 @@ describe Hactor::HTTP::Client do
       end
     end
 
-    describe "#follow" do
-      let(:link) { mock }
-      let(:uri) { stub }
-      let(:context_url) { mock }
-      let(:resolved_uri) { stub }
+  end
 
-      before :each do
-        Delegator.class_eval { include RSpec::Mocks::Methods }
-        client.stub!(:get).with(url: resolved_uri, actor: actor)
+  describe "#follow" do
+    let(:link) { mock }
+    let(:uri) { stub }
+    let(:context_url) { mock }
+    let(:resolved_uri) { stub }
+
+    before :each do
+      Delegator.class_eval { include RSpec::Mocks::Methods }
+      client.stub!(:get).with(url: resolved_uri, actor: actor)
+    end
+
+    context "plain url (no expand_with in option)" do
+      it "should use the context url to resolve link href" do
+        link.should_receive(:href)
+        .and_return(uri)
+        context_url.should_receive(:merge)
+        .with(uri)
+        .and_return(resolved_uri)
+
+        client.follow(link, context_url: context_url, actor: actor)
       end
+    end
 
-      context "plain url (no expand_with in option)" do
-        it "should use the context url to resolve link href" do
-          link.should_receive(:href)
-          .and_return(uri)
-          context_url.should_receive(:merge)
-          .with(uri)
-          .and_return(resolved_uri)
+    context "URI template (expand_with in option)" do
+      it "should apply the variables to the template and follow resulting URI" do
+        variables = stub
 
-          client.follow(link, context_url: context_url, actor: actor)
-        end
-      end
+        link.should_receive(:href).with(variables).and_return(uri)
+        context_url.should_receive(:merge).with(uri).and_return(resolved_uri)
 
-      context "URI template (expand_with in option)" do
-        it "should apply the variables to the template and follow resulting URI" do
-          variables = stub
-
-          link.should_receive(:href).with(variables).and_return(uri)
-          context_url.should_receive(:merge).with(uri).and_return(resolved_uri)
-
-          client.follow(link, context_url: context_url, actor: actor, expand_with: variables)
-        end
+        client.follow(link, context_url: context_url, actor: actor, expand_with: variables)
       end
     end
   end
