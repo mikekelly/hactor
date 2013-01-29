@@ -10,7 +10,11 @@ module Hactor
       attr_reader :codec, :response
       attr_accessor :http_client
 
-      def_delegators :body, :follow, :traverse
+      def_delegators :body, :follow,
+                            :traverse,
+                            :properties,
+                            :embedded_resources,
+                            :links
 
       def initialize(response, options={})
         @http_client = options.fetch(:http_client)
