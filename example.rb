@@ -1,15 +1,24 @@
 require 'hactor'
-require 'hactor/actor'
 
-class UserListActor
+def start
+  Hactor.start url: 'http://haltalk.herokuapp.com/', actor: HomeActor.new
+end
+
+class HomeActor
   include Hactor::Actor
 
   def on_200(response)
-    user_links = response.body.links.select { |link| link.rel == 'ht:user' }
-    puts "There's #{user_links.count} users on haltalk:"
-    user_links.each do |link|
-      puts "#{link.title} (#{link.href})"
-    end
+    name = 'CHANGE ME'
+    user_name = 'PLEASE_CHANGE_ME'
+
+    response.follow 'ht:latest-posts', actor: LatestPostActor.new
+
+    response.traverse('ht:signup', method: 'POST',
+                      body: { username: user_name, real_name: name, password: 'blarb' },
+                      actor: SignedUpActor.new)
+
+    response.follow('ht:me', expand_with: { name: user_name },
+                    actor: ->(res) { puts res.properties })
   end
 end
 
@@ -17,18 +26,24 @@ class LatestPostActor
   include Hactor::Actor
 
   def on_200(response)
-    puts response.body.embedded_resources.all.first.links.all
+    response.embedded_resources.each do |resource|
+      puts resource.link('self').href
+      puts resource.properties
+    end
   end
 end
 
-class HomeActor
+class SignedUpActor
   include Hactor::Actor
 
   def on_200(response)
-    response.follow 'ht:users', actor: UserListActor.new
-    response.follow 'ht:latest-posts', actor: LatestPostActor.new
-    response.follow 'ht:me', expand_with: { name: 'mike' }, actor: ->(res) { puts res.inspect }
+    puts "Created an account"
+  end
+
+  def on_400(response)
+    puts "Failed to create account"
   end
 end
 
-Hactor.start url: 'http://haltalk.herokuapp.com/', actor: HomeActor.new
+
+start()
