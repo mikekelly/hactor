@@ -15,6 +15,7 @@ module Hactor
       def initialize(body, options={})
         @response = options.fetch(:response)
         @resource_class = options[:resource_class] || Hactor::HAL::Resource
+        body = '{}' if body == 'null'
         @body = JSON.parse(body)
       end
 
@@ -32,4 +33,3 @@ module Hactor
     end
   end
 end
-
