@@ -8,10 +8,10 @@ class HomeActor
   include Hactor::Actor
 
   def on_200(response)
+    response.follow 'ht:latest-posts', actor: LatestPostActor.new
+
     name = 'CHANGE ME'
     user_name = 'PLEASE_CHANGE_ME'
-
-    response.follow 'ht:latest-posts', actor: LatestPostActor.new
 
     response.traverse('ht:signup', method: 'POST',
                       body: { username: user_name, real_name: name, password: 'blarb' },
@@ -36,7 +36,7 @@ end
 class SignedUpActor
   include Hactor::Actor
 
-  def on_200(response)
+  def on_201(response)
     puts "Created an account"
   end
 
