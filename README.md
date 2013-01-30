@@ -6,7 +6,7 @@ Here's an example of how to use Hactor:
 ```ruby
 require 'hactor'
 
-def start
+def run_example
   Hactor.start url: 'http://haltalk.herokuapp.com/', actor: HomeActor.new
 end
 
@@ -52,7 +52,7 @@ class SignedUpActor
 end
 
 
-start()
+run_example()
 ```
 
 The following demonstrates the various things an actor can do with a response:
